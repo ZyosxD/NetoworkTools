@@ -336,7 +336,8 @@ call :log_header "Show Saved WiFi Password"
 echo !color_yellow!Showing saved WiFi profiles...!color_reset!
 call :log_and_run "List WiFi Profiles" "netsh wlan show profiles"
 echo.
-set /p profile_name="Enter the name of the profile to see its password: "
+echo !color_yellow!From the list above, type the WiFi network name exactly as it appears.!color_reset!
+set /p profile_name="Enter the profile name to see its password: "
 if "!profile_name!"=="" (
     echo !color_red!Profile name cannot be empty.!color_reset!
     pause
@@ -344,7 +345,20 @@ if "!profile_name!"=="" (
 )
 call :log_header "Retrieve password for !profile_name!"
 echo !color_yellow!Retrieving password for "!profile_name!"...!color_reset!
-call :log_and_run "Password for !profile_name!" "netsh wlan show profile name^=""!profile_name!"" key^=clear | findstr ""Key Content"""
+set "password_found="
+(
+    echo. >> "!SESSION_LOG!"
+    FOR /F "tokens=* delims=" %%a in ('netsh wlan show profile name^="!profile_name!" key^=clear ^| findstr /c:"Key Content"') do (
+        echo %%a
+        echo %%a >> "!SESSION_LOG!"
+        set password_found=true
+    )
+)
+if not defined password_found (
+    call :log_and_echo "!color_red!Password not found. Check if the profile name is correct and run as administrator.!color_reset!"
+)
+echo.
+echo !color_green!Done.!color_reset!
 pause
 goto advanced_menu
 
