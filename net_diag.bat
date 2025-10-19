@@ -28,17 +28,17 @@ rem ============================================================================
 cls
 echo.
 echo !color_blue!===============================================!color_reset!
-echo !color_yellow!         🌐 Network Diagnostic Tool 🌐
+echo !color_yellow!      --- Network Diagnostic Tool ---
 !color_reset!
 echo !color_blue!===============================================!color_reset!
 echo.
 echo Please select an option:
 echo.
-echo 1. 🔧 IP Config
-echo 2. 핑 Ping
-echo 3. 🗺️ Tracert
-echo 4. 🔬 Advanced Diagnostics
-echo 5. 🚪 Exit
+echo 1. [IP] IP Config
+echo 2. [Ping] Ping
+echo 3. [Tracert] Tracert
+echo 4. [Advanced] Advanced Diagnostics
+echo 5. [Exit] Exit
 rem To add a new option, add another 'echo' line here.
 echo.
 set /p choice="Enter your choice: "
@@ -60,7 +60,7 @@ rem --- IP Config Sub-Menu ---
 cls
 echo.
 echo !color_blue!===============================================!color_reset!
-echo !color_yellow!             🔧 IP Config Menu 🔧
+echo !color_yellow!           --- IP Config Menu ---
 !color_reset!
 echo !color_blue!===============================================!color_reset!
 echo.
@@ -163,7 +163,7 @@ rem --- Advanced Diagnostics Sub-Menu ---
 cls
 echo.
 echo !color_blue!===============================================!color_reset!
-echo !color_yellow!         🔬 Advanced Diagnostics Menu 🔬
+echo !color_yellow!      --- Advanced Diagnostics Menu ---
 !color_reset!
 echo !color_blue!===============================================!color_reset!
 echo.
@@ -255,7 +255,7 @@ rem ============================================================================
 rem  How to Add a New Module
 rem ============================================================================
 rem 1. Add a menu entry in the :menu section.
-rem    Example: echo X. ✨ New Feature
+rem    Example: echo X. [New] New Feature
 rem
 rem 2. Add a new 'if' condition in the :menu section to handle the user's choice.
 rem    Example: if /i "%choice%"=="X" goto new_feature
