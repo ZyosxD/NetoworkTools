@@ -62,57 +62,61 @@ echo.
 
 rem --- Step 1: Get Default Gateway (Router) ---
 echo !color_yellow![Step 1 of 3] Verifying router connection...!color_reset!
+echo DEBUG: Searching for Default Gateway...
 set "gateway="
-for /f "tokens=3" %%g in ('ipconfig ^| findstr /c:"Default Gateway"') do (
-    if "!gateway!"=="" set gateway=%%g
+for /f "tokens=2 delims=:" %%g in ('ipconfig ^| findstr /c:"Default Gateway"') do (
+    for /f "tokens=*" %%h in ("%%g") do set "gateway=%%h"
 )
 
 if "!gateway!"=="" (
-    call :log_and_echo !color_red!Error: Default Gateway (Router) not found.!color_reset!
-    call :log_and_echo Please ensure you are connected to a network.
+    call :log_and_echo "!color_red!Error: Default Gateway (Router) not found.!color_reset!"
+    call :log_and_echo "Please ensure you are connected to a network."
     pause
     goto menu
 )
+echo DEBUG: Gateway found: !gateway!
 
 rem --- Step 2: Ping the Router ---
-ping -n 2 !gateway! > nul
+ping -n 2 "!gateway!" > nul
 if !errorlevel! equ 0 (
-    call :log_and_echo [ !color_green!OK!color_reset! ] Connection to the router (!gateway!) is successful.
+    call :log_and_echo "[ !color_green!OK!color_reset! ] Connection to the router (!gateway!) is successful."
 ) else (
-    call :log_and_echo [ !color_red!FAIL!color_reset! ] Cannot contact the router (!gateway!).
-    call :log_and_echo !color_red!Likely problem: Network cable unplugged, or an issue with WiFi/router.!color_reset!
+    call :log_and_echo "[ !color_red!FAIL!color_reset! ] Cannot contact the router (!gateway!)."
+    call :log_and_echo "!color_red!Likely problem: Network cable unplugged, or an issue with WiFi/router.!color_reset!"
     pause
     goto menu
 )
 
 rem --- Step 3: Ping the Internet ---
+echo DEBUG: Pinging external server 8.8.8.8...
 echo !color_yellow![Step 2 of 3] Verifying Internet connection...!color_reset!
 ping -n 2 8.8.8.8 > nul
 if !errorlevel! equ 0 (
-    call :log_and_echo [ !color_green!OK!color_reset! ] Internet connection is successful.
+    call :log_and_echo "[ !color_green!OK!color_reset! ] Internet connection is successful."
 ) else (
-    call :log_and_echo [ !color_red!FAIL!color_reset! ] Cannot connect to the Internet.
-    call :log_and_echo !color_red!Likely problem: The router has no Internet connection, or a firewall is blocking access.!color_reset!
+    call :log_and_echo "[ !color_red!FAIL!color_reset! ] Cannot connect to the Internet."
+    call :log_and_echo "!color_red!Likely problem: The router has no Internet connection, or a firewall is blocking access.!color_reset!"
     pause
     goto menu
 )
 
 rem --- Step 4: DNS Check ---
+echo DEBUG: Performing DNS lookup for google.com...
 echo !color_yellow![Step 3 of 3] Verifying DNS resolution...!color_reset!
 nslookup google.com > nul
 if !errorlevel! equ 0 (
-    call :log_and_echo [ !color_green!OK!color_reset! ] DNS servers are working correctly.
+    call :log_and_echo "[ !color_green!OK!color_reset! ] DNS servers are working correctly."
 ) else (
-    call :log_and_echo [ !color_red!FAIL!color_reset! ] DNS servers are not responding.
-    call :log_and_echo !color_red!Likely problem: The configured DNS servers are not working. Try flushing the DNS cache.!color_reset!
+    call :log_and_echo "[ !color_red!FAIL!color_reset! ] DNS servers are not responding."
+    call :log_and_echo "!color_red!Likely problem: The configured DNS servers are not working. Try flushing the DNS cache.!color_reset!"
     pause
     goto menu
 )
 
 echo.
-call :log_and_echo !color_green!================================================================!color_reset!
-call :log_and_echo !color_green! Diagnostics complete. Your connection is fully functional!                !color_reset!
-call :log_and_echo !color_green!================================================================!color_reset!
+call :log_and_echo "!color_green!================================================================!color_reset!"
+call :log_and_echo "!color_green! Diagnostics complete. Your connection is fully functional!                !color_reset!"
+call :log_and_echo "!color_green!================================================================!color_reset!"
 echo.
 pause
 goto menu
@@ -147,25 +151,25 @@ if /i "%ip_choice%"=="5" goto menu
 
 :ipconfig_all
 cls
-call :log_and_run "Display IP Configuration" ipconfig /all
+call :log_and_run "Display IP Configuration" "ipconfig /all"
 pause
 goto ipconfig_menu
 
 :ipconfig_release
 cls
-call :log_and_run "Release IP Address" ipconfig /release
+call :log_and_run "Release IP Address" "ipconfig /release"
 pause
 goto ipconfig_menu
 
 :ipconfig_renew
 cls
-call :log_and_run "Renew IP Address" ipconfig /renew
+call :log_and_run "Renew IP Address" "ipconfig /renew"
 pause
 goto ipconfig_menu
 
 :ipconfig_flushdns
 cls
-call :log_and_run "Flush DNS Cache" ipconfig /flushdns
+call :log_and_run "Flush DNS Cache" "ipconfig /flushdns"
 pause
 goto ipconfig_menu
 
@@ -196,7 +200,7 @@ if "!host!"=="" (
     pause
     goto ping_menu
 )
-call :log_and_run "Standard Ping for %host%" ping %host%
+call :log_and_run "Standard Ping for !host!" "ping "!host!""
 pause
 goto ping_menu
 
@@ -208,11 +212,11 @@ if "!host!"=="" (
     pause
     goto ping_menu
 )
-call :log_header "Extended Ping for %host%"
-call :log_and_echo "Starting extended ping on %host%. User must press Ctrl+C to stop."
-echo !color_yellow!Running extended ping on %host%...!color_reset!
+call :log_header "Extended Ping for !host!"
+call :log_and_echo "Starting extended ping on !host!. User must press Ctrl+C to stop."
+echo !color_yellow!Running extended ping on !host%...!color_reset!
 echo !color_yellow!Press CTRL+C to stop.!color_reset!
-ping %host% -t
+ping "!host!" -t
 echo.
 call :log_and_echo "Extended ping stopped by user."
 echo !color_green!Done.!color_reset!
@@ -229,7 +233,7 @@ if "!host!"=="" (
     pause
     goto menu
 )
-call :log_and_run "Trace Route for %host%" tracert %host%
+call :log_and_run "Trace Route for !host!" "tracert "!host!""
 pause
 goto menu
 
@@ -274,10 +278,16 @@ if "!host!"=="" (
     goto advanced_menu
 )
 set "PING_RESULTS_FILE=%TEMP%\ping_results_%RANDOM%.txt"
-call :log_header "Latency and Packet Loss Test for %host%"
-echo !color_yellow!Testing latency and packet loss for %host%...!color_reset!
+call :log_header "Latency and Packet Loss Test for !host!"
+echo !color_yellow!Testing latency and packet loss for !host!...!color_reset!
 echo !color_yellow!Sending 10 pings... please wait.!color_reset!
-ping -n 10 %host% > "!PING_RESULTS_FILE!"
+ping -n 10 "!host!" > "!PING_RESULTS_FILE!"
+if !errorlevel! neq 0 (
+    call :log_and_echo "!color_red!Error: Ping command failed. The host may be unreachable.!color_reset!"
+    del "!PING_RESULTS_FILE!"
+    pause
+    goto advanced_menu
+)
 type "!PING_RESULTS_FILE!" >> "!SESSION_LOG!"
 type "!PING_RESULTS_FILE!"
 set "avg_latency=Not found"
@@ -292,8 +302,8 @@ for /f "tokens=2 delims=()" %%a in ('findstr /c:"loss" /c:"perdidos" "!PING_RESU
 )
 del "!PING_RESULTS_FILE!"
 echo.
-call :log_and_echo Average Latency: %avg_latency%
-call :log_and_echo Packet Loss: %packet_loss%
+call :log_and_echo "Average Latency: %avg_latency%"
+call :log_and_echo "Packet Loss: %packet_loss%"
 echo.
 pause
 goto advanced_menu
@@ -301,21 +311,21 @@ goto advanced_menu
 rem --- Connected Devices ---
 :connected_devices
 cls
-call :log_and_run "Identify Connected Devices" arp -a
+call :log_and_run "Identify Connected Devices" "arp -a"
 pause
 goto advanced_menu
 
 rem --- Saved WiFi Profiles ---
 :wifi_profiles
 cls
-call :log_and_run "Show Saved WiFi Profiles" netsh wlan show profiles
+call :log_and_run "Show Saved WiFi Profiles" "netsh wlan show profiles"
 pause
 goto advanced_menu
 
 rem --- Available WiFi Networks ---
 :wifi_networks
 cls
-call :log_and_run "Show Available WiFi Networks" netsh wlan show networks
+call :log_and_run "Show Available WiFi Networks" "netsh wlan show networks"
 pause
 goto advanced_menu
 
@@ -324,7 +334,7 @@ rem --- Show WiFi Password ---
 cls
 call :log_header "Show Saved WiFi Password"
 echo !color_yellow!Showing saved WiFi profiles...!color_reset!
-call :log_and_run "List WiFi Profiles" netsh wlan show profiles
+call :log_and_run "List WiFi Profiles" "netsh wlan show profiles"
 echo.
 set /p profile_name="Enter the name of the profile to see its password: "
 if "!profile_name!"=="" (
@@ -334,19 +344,14 @@ if "!profile_name!"=="" (
 )
 call :log_header "Retrieve password for !profile_name!"
 echo !color_yellow!Retrieving password for "!profile_name!"...!color_reset!
-for /f "tokens=* delims=" %%a in ('netsh wlan show profile name^="!profile_name!" key^=clear ^| findstr "Key Content"') do (
-    echo %%a
-    echo %%a >> "!SESSION_LOG!"
-)
-echo.
-echo !color_green!Done.!color_reset!
+call :log_and_run "Password for !profile_name!" "netsh wlan show profile name^=""!profile_name!"" key^=clear | findstr ""Key Content"""
 pause
 goto advanced_menu
 
 rem --- Netstat ---
 :netstat
 cls
-call :log_and_run "Show Active Network Connections" netstat -an
+call :log_and_run "Show Active Network Connections" "netstat -an"
 pause
 goto advanced_menu
 
@@ -359,7 +364,7 @@ if "!domain!"=="" (
     pause
     goto advanced_menu
 )
-call :log_and_run "DNS Lookup for !domain!" nslookup !domain!
+call :log_and_run "DNS Lookup for !domain!" "nslookup "!domain!""
 pause
 goto advanced_menu
 
@@ -383,8 +388,8 @@ rem  Utility Functions
 rem ============================================================================
 
 :log_and_echo
-echo %*
-echo %* >> "!SESSION_LOG!"
+echo %~1
+echo %~1 >> "!SESSION_LOG!"
 goto :eof
 
 :log_header
@@ -394,14 +399,17 @@ goto :eof
 
 :log_and_run
 call :log_header "%~1"
-echo !color_yellow!Running command: %~2 %~3 %~4...!color_reset!
+echo !color_yellow!Running command: %~2...!color_reset!
 (
     echo.
-    FOR /F "usebackq tokens=* delims=" %%a in (`%~2 %~3 %~4`) do (
+    FOR /F "usebackq tokens=* delims=" %%a in (`%~2`) do (
         echo %%a
         echo %%a >> "!SESSION_LOG!"
     )
     echo.
+)
+if !errorlevel! neq 0 (
+    call :log_and_echo "!color_red!Warning: The command may have failed or produced no output.!color_reset!"
 )
 echo !color_green!Done.!color_reset!
 goto :eof
