@@ -11,30 +11,26 @@ Esta es una aplicación de línea de comandos todo-en-uno para Windows, diseñad
 Esta versión es mucho más potente. Aquí tienes un resumen de todo lo que incluye:
 
 ### **Funciones Clave**
-*   **NUEVO ✨: Generación Automática de Logs** 📝: ¡Todas las operaciones que realizas en una sesión se guardan automáticamente! Al salir de la herramienta, se generará un archivo `.txt` con el resumen completo de los diagnósticos, perfecto para revisar más tarde o compartir con un técnico.
-*   **Diagnóstico Automático** 🩺: ¿No estás seguro de qué pasa? Esta opción ejecuta una serie de pruebas (conexión con el router, acceso a internet, resolución DNS) y te dice exactamente dónde está el problema con un resumen fácil de entender.
-*   **Configuración IP** 📄: Revisa todos los detalles de tu conexión (IP, puerta de enlace, DNS).
-    *   También puedes **vaciar la caché de DNS** (`flushdns`) desde aquí.
-*   **Ping** 핑: Comprueba si un servidor está en línea.
-    *   Elige entre un **ping estándar** o un **ping extendido** (`-t`) para monitorear la conexión y detectar pérdidas de paquetes.
+*   **Generación Automática de Logs** 📝: ¡Todas las operaciones que realizas en una sesión se guardan automáticamente! Al salir, se generará un archivo `.txt` con el resumen completo de los diagnósticos.
+*   **Diagnóstico Automático** 🩺: Ejecuta una serie de pruebas (conexión con el router, acceso a internet, resolución DNS) y te dice exactamente dónde está el problema.
+*   **Configuración IP** 📄: Revisa todos los detalles de tu conexión (IP, puerta de enlace, DNS) y vacía la caché de DNS.
+*   **Ping** 핑: Comprueba si un servidor está en línea, con opción de ping estándar o extendido (`-t`).
 *   **Tracert (Trazar Ruta)** 🗺️: Descubre la ruta que toman tus datos para llegar a un destino.
 
 ### **Diagnósticos Avanzados**
 *   **Medir Latencia y Paquetes Perdidos** 🔬: Realiza una prueba para medir la calidad de tu conexión.
-*   **Ver Dispositivos Conectados** 💻: Muestra una lista de dispositivos en tu red local.
+*   **NUEVO ✨: Identificar Dispositivos Conectados (con Fabricante)** 🏭: Muestra una lista de todos los dispositivos en tu red local, y ahora ¡también identifica al fabricante de cada dispositivo (Apple, Samsung, etc.) a partir de su dirección MAC! (Nota: esta función requiere conexión a internet).
 *   **Gestión de WiFi** 📶:
-    *   **Ver Redes WiFi Guardadas**: Muestra una lista de todas las redes WiFi que has guardado en tu equipo.
+    *   **Ver Redes WiFi Guardadas**: Muestra una lista de todas las redes WiFi que has guardado.
     *   **Ver Redes WiFi Disponibles**: Escanea y muestra las redes WiFi a tu alcance.
-    *   **Ver Contraseña de WiFi Guardada**: ¡Puedes ver la contraseña de una red WiFi que ya tengas guardada!
+    *   **Ver Contraseña de WiFi Guardada**: Muestra la contraseña de una red WiFi guardada.
 *   **Herramientas Adicionales** ⚙️:
-    *   **Ver Conexiones Activas (`netstat`)**: Lista todas las conexiones de red entrantes y salientes de tu ordenador.
-    *   **Consultar DNS (`nslookup`)**: Traduce un nombre de dominio (como `google.com`) a su dirección IP.
+    *   **Ver Conexiones Activas (`netstat`)**: Lista todas las conexiones de red de tu ordenador.
+    *   **Consultar DNS (`nslookup`)**: Traduce un nombre de dominio a su dirección IP.
 
 ---
 
 ## 📋 Cómo Empezar
-
-¡Usar la herramienta sigue siendo súper fácil!
 
 1.  **Descarga el archivo**: Asegúrate de tener el archivo `net_diag.bat`.
 2.  **Abre una consola de comandos**: Pulsa **Windows + R**, escribe `cmd` y pulsa **Enter**.
@@ -43,7 +39,7 @@ Esta versión es mucho más potente. Aquí tienes un resumen de todo lo que incl
     ```
     net_diag.bat
     ```
-5.  **¡Listo!** 🎉 Se abrirá el menú, donde podrás elegir la opción que necesites. Al salir, la herramienta te informará del nombre del archivo de log que ha sido creado.
+5.  **¡Listo!** 🎉 Se abrirá el menú. Al salir, la herramienta te informará del nombre del archivo de log que ha sido creado.
 
 ---
 

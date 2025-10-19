@@ -249,7 +249,7 @@ echo !color_yellow!         --- Advanced Diagnostics Menu ---
 echo !color_blue!===============================================!color_reset!
 echo.
 echo 1. Measure Latency and Packet Loss
-echo 2. Identify Connected Devices
+echo 2. Identify Connected Devices (with Vendor)
 echo 3. Show Saved WiFi Profiles
 echo 4. Show Available WiFi Networks
 echo 5. Show Saved WiFi Password
@@ -308,12 +308,41 @@ echo.
 pause
 goto advanced_menu
 
-rem --- Connected Devices ---
+rem --- Connected Devices with Vendor Lookup ---
 :connected_devices
 cls
-call :log_and_run "Identify Connected Devices" "arp -a"
+call :log_header "Identify Connected Devices (with Vendor Lookup)"
+echo !color_yellow!Scanning for connected devices and identifying vendors...!color_reset!
+echo !color_yellow!This may take a moment. An internet connection is required.!color_reset!
+echo.
+call :log_and_echo "--- Connected Devices ---"
+FOR /F "tokens=1,2" %%a in ('arp -a ^| findstr /r /c:"[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}"') do (
+    set "ip_addr=%%a"
+    set "mac_addr=%%b"
+
+    set "line1=IP Address:   !ip_addr!"
+    set "line2=MAC Address:  !mac_addr!"
+    call :log_and_echo "!line1!"
+    call :log_and_echo "!line2!"
+
+    set "vendor="
+    for /f "tokens=*" %%v in ('powershell -Command "(Invoke-WebRequest -Uri https://api.macvendors.com/!mac_addr!).Content" 2^>nul') do (
+        set "vendor=%%v"
+    )
+
+    if defined vendor (
+        set "line3=Vendor:       !vendor!"
+    ) else (
+        set "line3=Vendor:       Not Found"
+    )
+    call :log_and_echo "!line3!"
+    call :log_and_echo "---------------------------------"
+)
+call :log_and_echo ""
+echo !color_green!Done.!color_reset!
 pause
 goto advanced_menu
+
 
 rem --- Saved WiFi Profiles ---
 :wifi_profiles
@@ -347,8 +376,8 @@ call :log_header "Retrieve password for !profile_name!"
 echo !color_yellow!Retrieving password for "!profile_name!"...!color_reset!
 set "password_found="
 (
-    echo. >> "!SESSION_LOG!"
-    FOR /F "tokens=* delims=" %%a in ('netsh wlan show profile name^="!profile_name!" key^=clear ^| findstr /c:"Key Content"') do (
+    echo.
+    FOR /F "usebackq tokens=* delims=" %%a in (`netsh wlan show profile name^="!profile_name!" key^=clear ^| findstr /c:"Key Content"`) do (
         echo %%a
         echo %%a >> "!SESSION_LOG!"
         set password_found=true
