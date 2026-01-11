@@ -1,46 +1,57 @@
-# Herramienta de Diagnóstico de Red
+# Herramienta de Diagnóstico de Red "Navaja Suiza" (Python)
 
-¡Hola! 👋 ¡Bienvenido a la Herramienta de Diagnóstico de Red!
+¡Bienvenido a la nueva y mejorada Herramienta de Diagnóstico de Red! 🛠️
 
-Esta es una aplicación de línea de comandos todo-en-uno para Windows, diseñada para ser tu asistente personal en la solución de problemas de red. Desde diagnósticos automáticos hasta herramientas avanzadas, todo está aquí. 🛠️
-
----
-
-## 🚀 ¿Qué puedes hacer con esta herramienta?
-
-Esta versión es mucho más potente. Aquí tienes un resumen de todo lo que incluye:
-
-### **Funciones Clave**
-*   **Generación Automática de Logs** 📝: ¡Todas las operaciones que realizas en una sesión se guardan automáticamente! Al salir, se generará un archivo `.txt` con el resumen completo de los diagnósticos.
-*   **Diagnóstico Automático** 🩺: Ejecuta una serie de pruebas (conexión con el router, acceso a internet, resolución DNS) y te dice exactamente dónde está el problema.
-*   **Configuración IP** 📄: Revisa todos los detalles de tu conexión (IP, puerta de enlace, DNS) y vacía la caché de DNS.
-*   **Ping** 핑: Comprueba si un servidor está en línea, con opción de ping estándar o extendido (`-t`).
-*   **Tracert (Trazar Ruta)** 🗺️: Descubre la ruta que toman tus datos para llegar a un destino.
-
-### **Diagnósticos Avanzados**
-*   **Medir Latencia y Paquetes Perdidos** 🔬: Realiza una prueba para medir la calidad de tu conexión.
-*   **NUEVO ✨: Identificar Dispositivos Conectados (con Fabricante)** 🏭: Muestra una lista de todos los dispositivos en tu red local, y ahora ¡también identifica al fabricante de cada dispositivo (Apple, Samsung, etc.) a partir de su dirección MAC! (Nota: esta función requiere conexión a internet).
-*   **Gestión de WiFi** 📶:
-    *   **Ver Redes WiFi Guardadas**: Muestra una lista de todas las redes WiFi que has guardado.
-    *   **Ver Redes WiFi Disponibles**: Escanea y muestra las redes WiFi a tu alcance.
-    *   **Ver Contraseña de WiFi Guardada**: Muestra la contraseña de una red WiFi guardada.
-*   **Herramientas Adicionales** ⚙️:
-    *   **Ver Conexiones Activas (`netstat`)**: Lista todas las conexiones de red de tu ordenador.
-    *   **Consultar DNS (`nslookup`)**: Traduce un nombre de dominio a su dirección IP.
+Esta herramienta ha sido completamente reescrita en **Python** para ofrecer compatibilidad multiplataforma (Windows, Linux, macOS) y funcionalidades avanzadas que no eran posibles en la versión anterior.
 
 ---
 
-## 📋 Cómo Empezar
+## 🚀 Nuevas Funcionalidades (Versión 2.0)
 
-1.  **Descarga el archivo**: Asegúrate de tener el archivo `net_diag.bat`.
-2.  **Abre una consola de comandos**: Pulsa **Windows + R**, escribe `cmd` y pulsa **Enter**.
-3.  **Navega hasta la carpeta**: Usa el comando `cd` para moverte a la carpeta donde guardaste el archivo.
-4.  **Ejecuta la herramienta**:
+Además de todas las funciones clásicas, ahora incluye:
+*   **Compatibilidad Total**: Funciona en Windows, Linux y macOS. 💻🐧🍎
+*   **Escáner de Red Local**: Descubre dispositivos conectados a tu red mediante un barrido de ping.
+*   **Escáner de Puertos**: Comprueba qué puertos (servicios) están abiertos en un dispositivo. 🔓
+*   **Test de Velocidad de Internet**: Mide tu velocidad de descarga real. ⚡
+*   **Información Pública y GeoIP**: Muestra tu IP pública, proveedor (ISP) y ubicación aproximada. 🌍
+*   **Búsqueda de Fabricante MAC**: Identifica la marca de los dispositivos conectados. 🏭
+
+---
+
+## 📋 Requisitos e Instalación
+
+Necesitas tener **Python 3** instalado en tu sistema.
+
+1.  **Instalar Python** (si no lo tienes):
+    *   **Windows**: Descárgalo en [python.org](https://www.python.org/downloads/).
+    *   **Linux**: `sudo apt install python3`
+    *   **macOS**: Viene preinstalado o `brew install python`.
+
+2.  **Ejecutar la herramienta**:
+    Abre tu terminal o consola y ejecuta:
+    ```bash
+    python3 net_diag.py
     ```
-    net_diag.bat
-    ```
-5.  **¡Listo!** 🎉 Se abrirá el menú. Al salir, la herramienta te informará del nombre del archivo de log que ha sido creado.
+    *(En Windows puede ser simplemente `python net_diag.py`)*
 
 ---
 
-¡Espero que esta versión súper mejorada te sea de gran ayuda! 😊
+## 🛠️ Menú de Opciones
+
+1.  **Auto Diagnostics**: Revisa conexión a Internet y DNS automáticamente.
+2.  **Ping Utility**: Comprueba la latencia con cualquier servidor.
+3.  **Traceroute**: Ve la ruta que toman tus datos.
+4.  **Local Network Scanner**: Escanea tu red WiFi/LAN para encontrar otros equipos.
+5.  **Port Scanner**: Revisa puertos abiertos (TCP) en una IP específica.
+6.  **WiFi Profiles**: (Windows) Recupera contraseñas guardadas. (Linux/Mac) Muestra perfiles.
+7.  **System & Public IP**: Muestra info de tu PC e IP pública.
+8.  **Internet Speed Test**: Prueba de velocidad de descarga.
+9.  **Config**: Herramientas extra (Netstat, liberar IP, DNS).
+
+---
+
+## 📝 Notas Importantes
+*   **Permisos**: Algunas funciones (como liberar IP o escaneos profundos) pueden requerir ejecutar la terminal como **Administrador** (Windows) o con `sudo` (Linux/Mac).
+*   **WiFi Passwords**: La recuperación automática de contraseñas WiFi es nativa de Windows. En Linux/Mac, la herramienta te indicará los comandos manuales por seguridad.
+
+¡Disfruta de tu nueva navaja suiza de red! 🎉
